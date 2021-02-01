@@ -33,6 +33,7 @@
                                     <segment title="Eazy"/>
                                     <segment title="Medium"/>
                                     <segment title="Hard"/>
+                                    <segment title="Extreme"/>
                                 </segments>
                                 <connections>
                                     <action selector="difficultyChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="xZK-pg-PKE"/>
@@ -73,13 +74,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IPP-8S-fbn">
-                                <rect key="frame" x="20" y="125" width="374" height="150"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="37l-KG-dtG"/>
-                                </constraints>
-                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ge-vu-7o6">
                                 <rect key="frame" x="20" y="59" width="56" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -90,23 +84,43 @@
                                     <action selector="backButtonPressed:" destination="BPp-7R-Sa1" eventType="touchUpInside" id="71s-nb-Kc5"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DtL-eZ-tk2">
+                                <rect key="frame" x="20" y="115" width="374" height="727"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IPP-8S-fbn">
+                                        <rect key="frame" x="0.0" y="291" width="374" height="145"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="145" id="37l-KG-dtG"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="centerY" secondItem="DtL-eZ-tk2" secondAttribute="centerY" id="Q6c-gG-CGO"/>
+                                    <constraint firstAttribute="trailing" secondItem="IPP-8S-fbn" secondAttribute="trailing" id="Qn3-tx-ivk"/>
+                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="leading" secondItem="DtL-eZ-tk2" secondAttribute="leading" id="o52-k0-Ois"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="t7c-xM-a1h"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6ge-vu-7o6" firstAttribute="leading" secondItem="t7c-xM-a1h" secondAttribute="leading" constant="20" id="4mO-9W-GaO"/>
-                            <constraint firstItem="IPP-8S-fbn" firstAttribute="leading" secondItem="t7c-xM-a1h" secondAttribute="leading" constant="20" id="7lR-nH-ZA0"/>
-                            <constraint firstItem="IPP-8S-fbn" firstAttribute="top" secondItem="WbJ-VK-Ujl" secondAttribute="bottom" constant="30" id="KXE-kl-ncs"/>
-                            <constraint firstItem="t7c-xM-a1h" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IPP-8S-fbn" secondAttribute="bottom" constant="20" id="L5x-u9-NtJ"/>
+                            <constraint firstItem="DtL-eZ-tk2" firstAttribute="leading" secondItem="t7c-xM-a1h" secondAttribute="leading" constant="20" id="6JB-Nz-WYO"/>
                             <constraint firstItem="WbJ-VK-Ujl" firstAttribute="top" secondItem="t7c-xM-a1h" secondAttribute="top" constant="15" id="RxA-BC-fTt"/>
+                            <constraint firstItem="t7c-xM-a1h" firstAttribute="bottom" secondItem="DtL-eZ-tk2" secondAttribute="bottom" constant="20" id="aN3-aH-M9b"/>
+                            <constraint firstItem="t7c-xM-a1h" firstAttribute="trailing" secondItem="DtL-eZ-tk2" secondAttribute="trailing" constant="20" id="cXm-xX-irV"/>
                             <constraint firstItem="6ge-vu-7o6" firstAttribute="centerY" secondItem="WbJ-VK-Ujl" secondAttribute="centerY" id="eLJ-f2-SE1"/>
+                            <constraint firstItem="WbJ-VK-Ujl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6ge-vu-7o6" secondAttribute="trailing" constant="8" symbolic="YES" id="hIy-hR-cSU"/>
+                            <constraint firstItem="DtL-eZ-tk2" firstAttribute="top" secondItem="WbJ-VK-Ujl" secondAttribute="bottom" constant="20" id="iUO-BX-UcR"/>
                             <constraint firstItem="WbJ-VK-Ujl" firstAttribute="centerX" secondItem="MFY-g5-QuI" secondAttribute="centerX" id="rsI-GG-XRA"/>
-                            <constraint firstItem="t7c-xM-a1h" firstAttribute="trailing" secondItem="IPP-8S-fbn" secondAttribute="trailing" constant="20" id="xe1-NW-vgm"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="VsU-bc-yEV"/>
                     <connections>
                         <outlet property="cardsStackView" destination="IPP-8S-fbn" id="5k2-MP-krh"/>
+                        <outlet property="cardsView" destination="DtL-eZ-tk2" id="UXm-jZ-GWP"/>
                         <outlet property="stackViewHeight" destination="37l-KG-dtG" id="iw1-lC-AWc"/>
                     </connections>
                 </viewController>

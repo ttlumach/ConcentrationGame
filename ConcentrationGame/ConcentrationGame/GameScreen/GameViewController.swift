@@ -20,16 +20,24 @@ enum colors {
     static let cardMatchedColor = UIColor(hue: 0, saturation: 0, brightness: 0, alpha: 0)
 }
 
+enum cardSize {
+    static let width = CGFloat(20)
+    static let height = CGFloat(40)
+}
+
 enum DifficultyMode: Int {
-    case easy = 10
+    case easy = 15
     case medium = 20
-    case hard = 40
+    case hard = 30
+    case extreme = 8
+    case hardcore = 45
 }
 
 class GameViewController: UIViewController {
 
     @IBOutlet weak var cardsStackView: UIStackView!
     @IBOutlet weak var stackViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var cardsView: UIView!
     
     lazy var concentrationGame = Concentration(elementsCount: difficulty.rawValue)
     var buttons: [UIButton] = []
@@ -38,6 +46,9 @@ class GameViewController: UIViewController {
     var cards: [UIButton:Card] = [:]
     
     var difficulty: DifficultyMode = .easy
+    
+    lazy var animator = UIDynamicAnimator(referenceView: cardsView)
+    lazy var cardBehavior = CardBehavior(animator: animator)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +79,8 @@ class GameViewController: UIViewController {
     }
     
     func startGame() {
-        setupCards()
+        concentrationGame.createCards()
+        setupGameMode()
     }
     
     func endGame()  {
@@ -82,11 +94,8 @@ class GameViewController: UIViewController {
             endGame()
         }
     }
-
+    
     func setupCards() {
-        
-        concentrationGame.createCards()
-        
         for _ in 0..<difficulty.rawValue / 5 {
             
             let stackView = UIStackView()
@@ -107,6 +116,63 @@ class GameViewController: UIViewController {
         
         for index in 0..<buttons.count {
             cards[buttons[index]] = concentrationGame.cards[index]
+        }
+    }
+    
+    func setupCardsForExtreme() {
+        
+        for i in 0..<difficulty.rawValue {
+            let button = UIButton()
+            button.backgroundColor = colors.cardBackgroundColor
+            button.setTitleColor(colors.cardTextColor, for: .normal)
+            button.addTarget(self, action: #selector(GameViewController.cardPressed(_:)), for: .touchUpInside)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.frame = CGRect(x: self.view.bounds.minX , y: self.view.bounds.midY, width: cardSize.width, height: cardSize.height)
+            buttons.append(button)
+            cardsView.addSubview(button)
+        }
+        
+        for index in 0..<buttons.count {
+            cards[buttons[index]] = concentrationGame.cards[index]
+        }
+    }
+    
+    func setupEasyMode() {
+        setupCards()
+    }
+    
+    func setupMediumMode() {
+        setupCards()
+    }
+    
+    func setupHardMode() {
+        setupCards()
+    }
+    
+    func setupHardcoreMode() {
+        
+    }
+    
+    func setupExtremeMode() {
+        setupCardsForExtreme()
+        for button in buttons {
+            cardBehavior.addItem(button)
+        }
+    }
+    
+    func setupGameMode() {
+        
+        switch self.difficulty {
+        case .easy:
+            setupEasyMode()
+        case .medium:
+            setupMediumMode()
+        case .hard:
+            setupHardMode()
+        case .hardcore:
+            setupHardcoreMode()
+        case .extreme:
+            setupExtremeMode()
         }
     }
     
@@ -153,13 +219,17 @@ class GameViewController: UIViewController {
                         key.isUserInteractionEnabled = false
                         self.animateMatchCard(key)
                         self.enableAllButtons()
+                        
+                        if self.difficulty == .hard {
+                            key.removeFromSuperview()
+                        }
                     }
                 }
             }
             previousButton = nil
             checkForGameEnd()
         } else {
-            if concentrationGame.facedUpCardToPair != nil{ // 1 card on board
+            if concentrationGame.facedUpCardToPair != nil{ // is the first card on board
                 animateFlipToFaceCard(sender, withId: pickedCard.id)
                 lockButton(button: sender)
                 previousButton = sender

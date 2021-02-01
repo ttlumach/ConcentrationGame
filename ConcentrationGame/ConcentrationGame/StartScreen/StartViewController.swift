@@ -27,6 +27,8 @@ class StartViewController: UIViewController {
             difficulty = .medium
         case 2:
             difficulty = .hard
+        case 3:
+            difficulty = .extreme
         default:
             print("Error")
         }
@@ -35,7 +37,7 @@ class StartViewController: UIViewController {
     @IBAction func startButtonPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.gameVCIdentifier) as! GameViewController
         vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .flipHorizontal
+        vc.modalTransitionStyle = .crossDissolve
         vc.difficulty = self.difficulty
         self.present(vc, animated: true, completion: nil)
     }
