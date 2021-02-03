@@ -9,6 +9,13 @@ import UIKit
 
 class StartViewController: UIViewController {
     
+    enum Colors {
+        static let eazy = UIColor.systemGreen
+        static let medium = UIColor.green
+        static let hard = UIColor.orange
+        static let extreme = UIColor.red
+    }
+    
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var difficultySC: UISegmentedControl!
     
@@ -59,12 +66,16 @@ class StartViewController: UIViewController {
         switch difficultySC.selectedSegmentIndex {
         case 0:
             difficulty = .easy
+            startButton.setTitleColor(Colors.eazy, for: .normal)
         case 1:
             difficulty = .medium
+            startButton.setTitleColor(Colors.medium, for: .normal)
         case 2:
             difficulty = .hard
+            startButton.setTitleColor(Colors.hard, for: .normal)
         case 3:
             difficulty = .extreme
+            startButton.setTitleColor(Colors.extreme, for: .normal)
         default:
             print("Error")
         }
