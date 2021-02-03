@@ -26,11 +26,11 @@ enum cardSize {
 }
 
 enum DifficultyMode: Int {
-    case easy = 15
-    case medium = 20
+    case easy = 20
+    case medium = 25
     case hard = 30
     case extreme = 8
-    case hardcore = 45
+    case hardcore = 46
 }
 
 class GameViewController: UIViewController {
@@ -200,6 +200,7 @@ class GameViewController: UIViewController {
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.startVCIdentifier) as! StartViewController
+        vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }
