@@ -73,7 +73,7 @@ class StartViewController: UIViewController {
     @IBAction func startButtonPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.gameVCIdentifier) as! GameViewController
         vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .partialCurl
+        vc.modalTransitionStyle = .crossDissolve
         vc.difficulty = self.difficulty
         self.present(vc, animated: true, completion: nil)
     }
