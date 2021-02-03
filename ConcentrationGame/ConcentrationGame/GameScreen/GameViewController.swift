@@ -21,8 +21,8 @@ enum colors {
 }
 
 enum cardSize {
-    static let width = CGFloat(20)
-    static let height = CGFloat(40)
+    static let width = CGFloat(40)
+    static let height = CGFloat(20)
 }
 
 enum DifficultyMode: Int {
@@ -86,6 +86,7 @@ class GameViewController: UIViewController {
     func endGame()  {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.endVCidentifier) as! EndViewController
         vc.modalPresentationStyle = .fullScreen
+        vc.gameEndWithDifficulty = difficulty
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -121,13 +122,13 @@ class GameViewController: UIViewController {
     
     func setupCardsForExtreme() {
         
-        for i in 0..<difficulty.rawValue {
+        for _ in 0..<difficulty.rawValue {
             let button = UIButton()
             button.backgroundColor = colors.cardBackgroundColor
             button.setTitleColor(colors.cardTextColor, for: .normal)
             button.addTarget(self, action: #selector(GameViewController.cardPressed(_:)), for: .touchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.frame = CGRect(x: self.view.bounds.minX , y: self.view.bounds.midY, width: cardSize.width, height: cardSize.height)
+            button.frame = CGRect(x: self.view.bounds.midX , y: self.view.bounds.midY, width: cardSize.width, height: cardSize.height)
             buttons.append(button)
             cardsView.addSubview(button)
         }
@@ -190,11 +191,11 @@ class GameViewController: UIViewController {
         }, completion: nil)
     }
     
-    func animateMatchCard(_ button: UIButton) {
+    func animateMatchCard(_ button: UIButton, completion: ((Bool) -> Void)? = nil) {
         UIView.transition(with: button, duration: 0.5, options: .transitionCurlDown, animations: {
             button.backgroundColor = colors.cardMatchedColor
             button.setTitle("", for: .normal)
-        }, completion: nil)
+        }, completion: completion)
     }
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
@@ -205,24 +206,36 @@ class GameViewController: UIViewController {
     
     @IBAction func cardPressed(_ sender: UIButton) {
         
+        //choosing picked card
         let pickedCard = cards[sender]!
         concentrationGame.chooseCard(pickedCard)
         
-        if concentrationGame.lastPickedCard.isMatched { //Matched
+        if concentrationGame.lastPickedCard.isMatched { //Matched(already in model)
             
             animateFlipToFaceCard(sender, withId: pickedCard.id)
             
-            for (key, value) in cards {
+            for (key, value) in cards {//find cards with the same ID ang remove those
                 if value.id == pickedCard.id {
                     lockAllButtons()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {//need time between showing cards face and removing it
                         key.isUserInteractionEnabled = false
-                        self.animateMatchCard(key)
-                        self.enableAllButtons()
-                        
-                        if self.difficulty == .hard {
-                            key.removeFromSuperview()
+
+                        switch self.difficulty {// add animation depending on difficulty need
+                        case .hard:
+                            self.animateMatchCard(key) {_ in
+                                key.removeFromSuperview()
+                            }
+                        case .extreme:
+                            self.animateMatchCard(key) {_ in
+                                key.isHidden = true
+                                self.cardBehavior.removeItem(key)
+                            }
+                            
+                        default:
+                            self.animateMatchCard(key, completion: nil)
                         }
+
+                        self.enableAllButtons()
                     }
                 }
             }

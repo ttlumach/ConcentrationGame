@@ -19,8 +19,10 @@ class CardBehavior: UIDynamicBehavior {
     lazy var itemBehavior: UIDynamicItemBehavior = {
         let behavior = UIDynamicItemBehavior()
         behavior.allowsRotation = true
-        behavior.elasticity = 1.01
+        behavior.elasticity = 1
         behavior.resistance = 0
+        behavior.friction = 0
+        behavior.angularResistance = 0
         return behavior
     }()
     
@@ -38,6 +40,11 @@ class CardBehavior: UIDynamicBehavior {
         collisionBehavior.addItem(item)
         itemBehavior.addItem(item)
         push(item)
+    }
+    
+    func removeItem(_ item: UIDynamicItem) {
+        collisionBehavior.removeItem(item)
+        itemBehavior.removeItem(item)
     }
     
     override init() {

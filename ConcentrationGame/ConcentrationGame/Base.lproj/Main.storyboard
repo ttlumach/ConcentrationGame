@@ -26,9 +26,9 @@
                                     <action selector="startButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vfu-Hz-uhu"/>
                                 </connections>
                             </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bQW-X8-Ppp">
-                                <rect key="frame" x="65" y="301" width="318" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bQW-X8-Ppp">
+                                <rect key="frame" x="65.5" y="511" width="283" height="32"/>
+                                <color key="backgroundColor" red="1" green="0.85529308845611196" blue="0.86825118159820291" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <segments>
                                     <segment title="Eazy"/>
                                     <segment title="Medium"/>
@@ -43,8 +43,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="bQW-X8-Ppp" firstAttribute="top" secondItem="BL9-jn-dmb" secondAttribute="bottom" constant="-3" id="4qm-dV-OnQ"/>
                             <constraint firstItem="BL9-jn-dmb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Vgf-Sy-UZ2"/>
                             <constraint firstItem="BL9-jn-dmb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="sBo-8W-kWc"/>
+                            <constraint firstItem="bQW-X8-Ppp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v0e-Fe-VeF"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="r0N-i1-yOg"/>

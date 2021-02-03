@@ -9,6 +9,8 @@ import UIKit
 
 class EndViewController: UIViewController {
     
+    var gameEndWithDifficulty: DifficultyMode!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -17,6 +19,7 @@ class EndViewController: UIViewController {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.gameVCIdentifier) as! GameViewController
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .flipHorizontal
+        vc.difficulty = gameEndWithDifficulty
         self.present(vc, animated: true, completion: nil)
     }
     
