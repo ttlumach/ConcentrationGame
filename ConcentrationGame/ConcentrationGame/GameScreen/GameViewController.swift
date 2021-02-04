@@ -138,6 +138,34 @@ class GameViewController: UIViewController {
         }
     }
     
+    func setupCardsForMedium() {
+        for _ in 0..<numberOfCards / 5 {
+            
+            let stackView = UIStackView()
+            stackView.alignment = .fill
+            stackView.distribution = .fillEqually
+            stackView.spacing = 5
+            
+            for _ in 0..<5 {
+                let button = UIButton()
+                button.backgroundColor = colors.cardBackgroundColor
+                button.setTitleColor(colors.cardTextColor, for: .normal)
+                button.isExclusiveTouch = true
+                buttons.append(button)
+                button.addTarget(self, action: #selector(GameViewController.cardPressed(_:)), for: .touchUpInside)
+                stackView.addArrangedSubview(button)
+                
+            }
+            
+            cardsStackViewsArray.append(stackView)
+            cardsStackView.addArrangedSubview(stackView)
+        }
+        
+        for index in 0..<buttons.count {
+            cards[buttons[index]] = concentrationGame.cards[index]
+        }
+    }
+    
     func setupCardsForExtreme() {
         
         for _ in 0..<numberOfCards {
@@ -162,7 +190,7 @@ class GameViewController: UIViewController {
     }
     
     func setupMediumMode() {
-        setupCards()
+        setupCardsForMedium()
     }
     
     func setupHardMode() {
@@ -288,9 +316,7 @@ class GameViewController: UIViewController {
                         switch self.difficulty {// add animation depending on difficulty need
                         case .medium:
                             self.animateMatchCard(key) {_ in
-                                let height = self.cardsStackView.frame.size.height
                                 key.removeFromSuperview()
-                                self.cardsStackView.frame.size.height = height
                             }
                         case .hard:
                             self.animateMatchCard(key) {_ in

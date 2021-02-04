@@ -131,7 +131,7 @@
                                 <rect key="frame" x="20" y="115" width="374" height="727"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IPP-8S-fbn">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="727"/>
+                                        <rect key="frame" x="0.0" y="30" width="374" height="667"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
                                 </subviews>
@@ -142,7 +142,7 @@
                                     <constraint firstItem="IPP-8S-fbn" firstAttribute="centerY" secondItem="DtL-eZ-tk2" secondAttribute="centerY" id="Q6c-gG-CGO"/>
                                     <constraint firstItem="IPP-8S-fbn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DtL-eZ-tk2" secondAttribute="top" id="S9K-gC-JGC"/>
                                     <constraint firstItem="IPP-8S-fbn" firstAttribute="leading" secondItem="DtL-eZ-tk2" secondAttribute="leading" priority="999" id="drL-bf-fHa"/>
-                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="top" secondItem="DtL-eZ-tk2" secondAttribute="top" priority="999" id="qNG-cf-fSz"/>
+                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="top" secondItem="DtL-eZ-tk2" secondAttribute="top" priority="999" constant="30" id="qNG-cf-fSz"/>
                                 </constraints>
                             </view>
                         </subviews>
