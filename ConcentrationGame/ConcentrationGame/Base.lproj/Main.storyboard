@@ -131,22 +131,18 @@
                                 <rect key="frame" x="20" y="115" width="374" height="727"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="IPP-8S-fbn">
-                                        <rect key="frame" x="5" y="291" width="364" height="145"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="727"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="145" id="37l-KG-dtG"/>
-                                            <constraint firstAttribute="height" secondItem="IPP-8S-fbn" secondAttribute="width" multiplier="2:5" priority="750" id="V69-Au-ZRd"/>
-                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="IPP-8S-fbn" firstAttribute="centerX" secondItem="DtL-eZ-tk2" secondAttribute="centerX" id="30M-mi-6AA"/>
-                                    <constraint firstAttribute="trailing" secondItem="IPP-8S-fbn" secondAttribute="trailing" constant="5" id="9eg-sQ-BJk"/>
-                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="leading" secondItem="DtL-eZ-tk2" secondAttribute="leading" constant="5" id="Nfo-HE-qPP"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IPP-8S-fbn" secondAttribute="bottom" constant="10" id="Px0-lU-6Z1"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IPP-8S-fbn" secondAttribute="trailing" id="9eg-sQ-BJk"/>
                                     <constraint firstItem="IPP-8S-fbn" firstAttribute="centerY" secondItem="DtL-eZ-tk2" secondAttribute="centerY" id="Q6c-gG-CGO"/>
-                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DtL-eZ-tk2" secondAttribute="top" constant="10" id="S9K-gC-JGC"/>
+                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="DtL-eZ-tk2" secondAttribute="top" id="S9K-gC-JGC"/>
+                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="leading" secondItem="DtL-eZ-tk2" secondAttribute="leading" priority="999" id="drL-bf-fHa"/>
+                                    <constraint firstItem="IPP-8S-fbn" firstAttribute="top" secondItem="DtL-eZ-tk2" secondAttribute="top" priority="999" id="qNG-cf-fSz"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -168,7 +164,6 @@
                     <connections>
                         <outlet property="cardsStackView" destination="IPP-8S-fbn" id="5k2-MP-krh"/>
                         <outlet property="cardsView" destination="DtL-eZ-tk2" id="UXm-jZ-GWP"/>
-                        <outlet property="stackViewHeight" destination="37l-KG-dtG" id="iw1-lC-AWc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Met-df-wIH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -36,7 +36,6 @@ enum DifficultyMode {
 class GameViewController: UIViewController {
 
     @IBOutlet weak var cardsStackView: UIStackView!
-    @IBOutlet weak var stackViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var cardsView: UIView!
     
@@ -57,14 +56,26 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        stackViewHeight.constant = stackViewHeight.constant * CGFloat(numberOfCards) / CGFloat(10.0)
         startGame()
+        makeCardsStackViewsCorrect()
     }
     
+    //MARK: Cards Stack View correcting
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        
         guard difficulty != DifficultyMode.extreme else { return }
-        
+        makeCardsStackViewsCorrect()
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if difficulty == .extreme {
+            return .portrait
+        } else {
+            return .all
+        }
+    }
+    
+    func makeCardsStackViewsCorrect() {
         if cardsStackViewsArray.count < 5 { // 5 elements in row(stack view)(static) chek if heigth < width
             
             if view.traitCollection.verticalSizeClass == .compact {
@@ -95,52 +106,8 @@ class GameViewController: UIViewController {
         }
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if difficulty == .extreme {
-            return .portrait
-        } else {
-            return .all
-        }
-    }
     
-    func lockAllButtons() {
-        for button in buttons {
-            button.isEnabled = false
-        }
-    }
-    
-    func enableAllButtons() {
-        for button in buttons {
-            button.isEnabled = true
-        }
-    }
-    
-    func lockButton(button: UIButton) {
-        button.isEnabled = false
-        
-    }
-    
-    func enableButton(button: UIButton) {
-        button.isEnabled = true
-    }
-    
-    func startGame() {
-        concentrationGame.createCards()
-        setupGameMode()
-    }
-    
-    func endGame()  {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.endVCidentifier) as! EndViewController
-        vc.modalPresentationStyle = .fullScreen
-        vc.difficulty = difficulty
-        self.present(vc, animated: true, completion: nil)
-    }
-    
-    func checkForGameEnd(){
-        if concentrationGame.isGameEnd {
-            endGame()
-        }
-    }
+    //MARK: Setup Game
     
     func setupCards() {
         for _ in 0..<numberOfCards / 5 {
@@ -157,8 +124,9 @@ class GameViewController: UIViewController {
                 button.isExclusiveTouch = true
                 buttons.append(button)
                 button.addTarget(self, action: #selector(GameViewController.cardPressed(_:)), for: .touchUpInside)
-                stackView.addArrangedSubview(button)
                 button.aspectRatio(1).isActive = true
+                stackView.addArrangedSubview(button)
+                
             }
             
             cardsStackViewsArray.append(stackView)
@@ -228,6 +196,8 @@ class GameViewController: UIViewController {
         }
     }
     
+    //MARK: Animation
+    
     func animateFlipToFaceCard(_ button: UIButton, withId id: Int) {
         UIView.transition(with: button, duration: 0.3, options: .transitionFlipFromLeft, animations: {
             button.backgroundColor = colors.cardFaceColor
@@ -248,6 +218,49 @@ class GameViewController: UIViewController {
             button.setTitle("", for: .normal)
         }, completion: completion)
     }
+    
+    //MARK: Businness logic
+    
+    func lockAllButtons() {
+        for button in buttons {
+            button.isEnabled = false
+        }
+    }
+    
+    func enableAllButtons() {
+        for button in buttons {
+            button.isEnabled = true
+        }
+    }
+    
+    func lockButton(button: UIButton) {
+        button.isEnabled = false
+    }
+    
+    func enableButton(button: UIButton) {
+        button.isEnabled = true
+    }
+    
+    func startGame() {
+        concentrationGame.createCards()
+        setupGameMode()
+    }
+    
+    func endGame()  {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.endVCidentifier) as! EndViewController
+        vc.modalPresentationStyle = .fullScreen
+        vc.difficulty = difficulty
+        vc.numberOfCards = numberOfCards
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func checkForGameEnd(){
+        if concentrationGame.isGameEnd {
+            endGame()
+        }
+    }
+    
+    //MARK: Actions
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.startVCIdentifier) as! StartViewController
@@ -275,7 +288,9 @@ class GameViewController: UIViewController {
                         switch self.difficulty {// add animation depending on difficulty need
                         case .medium:
                             self.animateMatchCard(key) {_ in
+                                let height = self.cardsStackView.frame.size.height
                                 key.removeFromSuperview()
+                                self.cardsStackView.frame.size.height = height
                             }
                         case .hard:
                             self.animateMatchCard(key) {_ in

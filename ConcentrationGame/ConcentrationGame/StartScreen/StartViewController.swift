@@ -90,6 +90,7 @@ class StartViewController: UIViewController {
             print("Error")
         }
     }
+    
     @IBAction func numberOfCardsChanged(_ sender: UISegmentedControl) {
         guard let numberOfCards = Int(String(sender.titleForSegment(at: sender.selectedSegmentIndex)!)) else { return }
         self.numberOfCards = numberOfCards
