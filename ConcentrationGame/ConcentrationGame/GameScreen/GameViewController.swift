@@ -21,31 +21,35 @@ enum colors {
 }
 
 enum cardSize {
-    static let width = CGFloat(40)
-    static let height = CGFloat(20)
+    static let width = CGFloat(60)
+    static let height = CGFloat(40)
 }
 
-enum DifficultyMode: Int {
-    case easy = 20
-    case medium = 25
-    case hard = 30
-    case extreme = 8
-    case hardcore = 46
+enum DifficultyMode {
+    case easy
+    case medium
+    case hard
+    case extreme
+    case hardcore
 }
 
 class GameViewController: UIViewController {
 
     @IBOutlet weak var cardsStackView: UIStackView!
     @IBOutlet weak var stackViewHeight: NSLayoutConstraint!
+    
     @IBOutlet weak var cardsView: UIView!
     
-    lazy var concentrationGame = Concentration(elementsCount: difficulty.rawValue)
+    private var cardsStackViewsArray: [UIStackView] = []
+    
+    lazy var concentrationGame = Concentration(elementsCount: numberOfCards)
     var buttons: [UIButton] = []
     
     var previousButton: UIButton? = nil
     var cards: [UIButton:Card] = [:]
     
     var difficulty: DifficultyMode = .easy
+    var numberOfCards: Int = 10
     
     lazy var animator = UIDynamicAnimator(referenceView: cardsView)
     lazy var cardBehavior = CardBehavior(animator: animator)
@@ -53,8 +57,50 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        stackViewHeight.constant = stackViewHeight.constant * CGFloat(difficulty.rawValue) / CGFloat(10.0)
+        stackViewHeight.constant = stackViewHeight.constant * CGFloat(numberOfCards) / CGFloat(10.0)
         startGame()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        
+        guard difficulty != DifficultyMode.extreme else { return }
+        
+        if cardsStackViewsArray.count < 5 { // 5 elements in row(stack view)(static) chek if heigth < width
+            
+            if view.traitCollection.verticalSizeClass == .compact {
+                cardsStackView.axis = .vertical
+                for stackView in cardsStackViewsArray {
+                    stackView.axis = .horizontal
+                }
+            } else {
+                
+                cardsStackView.axis = .horizontal
+                for stackView in cardsStackViewsArray {
+                    stackView.axis = .vertical
+                }
+            }
+        } else {
+            
+            if view.traitCollection.verticalSizeClass == .compact {
+                cardsStackView.axis = .horizontal
+                for stackView in cardsStackViewsArray {
+                    stackView.axis = .vertical
+                }
+            } else {
+                cardsStackView.axis = .vertical
+                for stackView in cardsStackViewsArray {
+                    stackView.axis = .horizontal
+                }
+            }
+        }
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if difficulty == .extreme {
+            return .portrait
+        } else {
+            return .all
+        }
     }
     
     func lockAllButtons() {
@@ -86,7 +132,7 @@ class GameViewController: UIViewController {
     func endGame()  {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.endVCidentifier) as! EndViewController
         vc.modalPresentationStyle = .fullScreen
-        vc.gameEndWithDifficulty = difficulty
+        vc.difficulty = difficulty
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -97,7 +143,7 @@ class GameViewController: UIViewController {
     }
     
     func setupCards() {
-        for _ in 0..<difficulty.rawValue / 5 {
+        for _ in 0..<numberOfCards / 5 {
             
             let stackView = UIStackView()
             stackView.alignment = .fill
@@ -108,10 +154,14 @@ class GameViewController: UIViewController {
                 let button = UIButton()
                 button.backgroundColor = colors.cardBackgroundColor
                 button.setTitleColor(colors.cardTextColor, for: .normal)
+                button.isExclusiveTouch = true
                 buttons.append(button)
                 button.addTarget(self, action: #selector(GameViewController.cardPressed(_:)), for: .touchUpInside)
                 stackView.addArrangedSubview(button)
+                button.aspectRatio(1).isActive = true
             }
+            
+            cardsStackViewsArray.append(stackView)
             cardsStackView.addArrangedSubview(stackView)
         }
         
@@ -122,13 +172,14 @@ class GameViewController: UIViewController {
     
     func setupCardsForExtreme() {
         
-        for _ in 0..<difficulty.rawValue {
+        for _ in 0..<numberOfCards {
             let button = UIButton()
             button.backgroundColor = colors.cardBackgroundColor
             button.setTitleColor(colors.cardTextColor, for: .normal)
             button.addTarget(self, action: #selector(GameViewController.cardPressed(_:)), for: .touchUpInside)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.frame = CGRect(x: self.view.bounds.midX , y: self.view.bounds.midY, width: cardSize.width, height: cardSize.height)
+            button.isExclusiveTouch = true
             buttons.append(button)
             cardsView.addSubview(button)
         }
@@ -222,9 +273,13 @@ class GameViewController: UIViewController {
                         key.isUserInteractionEnabled = false
 
                         switch self.difficulty {// add animation depending on difficulty need
-                        case .hard:
+                        case .medium:
                             self.animateMatchCard(key) {_ in
                                 key.removeFromSuperview()
+                            }
+                        case .hard:
+                            self.animateMatchCard(key) {_ in
+                                key.backgroundColor = colors.cardBackgroundColor
                             }
                         case .extreme:
                             self.animateMatchCard(key) {_ in

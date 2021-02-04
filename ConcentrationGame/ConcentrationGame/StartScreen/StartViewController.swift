@@ -10,35 +10,45 @@ import UIKit
 class StartViewController: UIViewController {
     
     enum Colors {
-        static let eazy = UIColor.systemGreen
-        static let medium = UIColor.green
+        static let eazy = UIColor(red: 0.01, green: 0.49, blue: 0.31, alpha: 1.00)
+        static let medium = UIColor(red: 0.80, green: 0.80, blue: 0.00, alpha: 1.00)
         static let hard = UIColor.orange
         static let extreme = UIColor.red
     }
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var difficultySC: UISegmentedControl!
+    @IBOutlet weak var numberOfCardsSegmControl: UISegmentedControl!
     
     var difficulty: DifficultyMode = .easy
+    var numberOfCards: Int = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupSegmentControl()
+        
+        startButton.setTitleColor(Colors.eazy, for: .normal)
+        setupSegmentControls()
     }
     
-    func setupSegmentControl() {
-        let gradientImage = gradient(size: difficultySC.frame.size, color: [UIColor.green, UIColor.red])!
+    func setupSegmentControls() {
+        var gradientImage = gradient(size: difficultySC.frame.size, color: [UIColor.green, UIColor.red])!
         difficultySC.backgroundColor = UIColor(patternImage: gradientImage)
         
-        let notSelectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        var notSelectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         difficultySC.setTitleTextAttributes(notSelectedTitleTextAttributes, for: .normal)
         
-        let selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        var selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         difficultySC.setTitleTextAttributes(selectedTitleTextAttributes, for: .selected)
         
-//        difficultySC.layer.borderColor = UIColor.black.cgColor
-//        difficultySC.selectedSegmentTintColor = UIColor.white
-//        difficultySC.layer.borderWidth = 3
+        gradientImage = gradient(size: numberOfCardsSegmControl.frame.size, color: [UIColor.cyan, UIColor.blue])!
+        numberOfCardsSegmControl.backgroundColor = UIColor(patternImage: gradientImage)
+        
+        notSelectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        numberOfCardsSegmControl.setTitleTextAttributes(notSelectedTitleTextAttributes, for: .normal)
+        
+        selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        numberOfCardsSegmControl.setTitleTextAttributes(selectedTitleTextAttributes, for: .selected)
+
     }
     
     func gradient(size:CGSize,color:[UIColor]) -> UIImage?{
@@ -80,12 +90,17 @@ class StartViewController: UIViewController {
             print("Error")
         }
     }
+    @IBAction func numberOfCardsChanged(_ sender: UISegmentedControl) {
+        guard let numberOfCards = Int(String(sender.titleForSegment(at: sender.selectedSegmentIndex)!)) else { return }
+        self.numberOfCards = numberOfCards
+    }
     
     @IBAction func startButtonPressed(_ sender: UIButton) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: Constants.gameVCIdentifier) as! GameViewController
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .crossDissolve
         vc.difficulty = self.difficulty
+        vc.numberOfCards = numberOfCards
         self.present(vc, animated: true, completion: nil)
     }
 
