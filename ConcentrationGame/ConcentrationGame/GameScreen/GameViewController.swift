@@ -57,7 +57,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         startGame()
-        makeCardsStackViewsCorrect()
     }
     
     //MARK: Cards Stack View correcting
@@ -272,6 +271,7 @@ class GameViewController: UIViewController {
     func startGame() {
         concentrationGame.createCards()
         setupGameMode()
+        makeCardsStackViewsCorrect()
     }
     
     func endGame()  {
